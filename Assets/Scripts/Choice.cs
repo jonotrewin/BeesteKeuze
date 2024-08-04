@@ -29,4 +29,10 @@ public class Choice
     public statChange[] negativeStats;
 
 
+    [Space(40)]
+    [Header("Cards To Add")]
+    [Tooltip("List of Event Cards that are added to the deck")]
+    public MinorEvent[] eventsToAdd;
+
+
 }

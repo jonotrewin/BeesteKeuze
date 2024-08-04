@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f3c363875caf04d84cae1601c039de, type: 3}
+  m_Name: TestMinorEvent 2
+  m_EditorClassIdentifier: 
+  character: {fileID: 8934165514551699068, guid: 7cf8cc2f73928a641af1ad8a702c0112, type: 3}
+  text: You killed all those peopel. You're being brought before the courty
+  choices:
+  - Text: Zeker, wat een coole naam!
+    positiveStats:
+    - stat: 1
+      impact: 2
+    - stat: 0
+      impact: 2
+    - stat: 2
+      impact: 2
+    negativeStats: []
+    eventsToAdd: []
+  - Text: Fuck it, I'm not going
+    positiveStats: []
+    negativeStats:
+    - stat: 1
+      impact: 2
+    - stat: 0
+      impact: 2
+    - stat: 1
+      impact: 2
+    eventsToAdd:
+    - {fileID: 11400000, guid: 6d3e691f882d29b43ba2a0ea4c1fcf40, type: 2}

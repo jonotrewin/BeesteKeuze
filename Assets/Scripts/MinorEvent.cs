@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "My Assets/Minor Event")]
 public class MinorEvent : ScriptableObject
 {
-    public Sprite image;
+    public GameObject character;
 
     [Header("Event Text")]
     [TextArea]
@@ -15,6 +15,8 @@ public class MinorEvent : ScriptableObject
     [Space(20)]
     [Header("Choices")]
     public Choice[] choices = new Choice[2];
+
+
 
     
     
