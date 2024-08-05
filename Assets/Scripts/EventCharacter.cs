@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using System;
 
-public class DraggableImage : MonoBehaviour
+public class EventCharacter : MonoBehaviour
 {
     [SerializeField]Sprite sprite_Carried;
     [SerializeField] Sprite sprite_Dropped;
@@ -18,10 +18,13 @@ public class DraggableImage : MonoBehaviour
     float leftChoiceCoordinate = Screen.width / 3;
     float rightChoiceCoordinate = Screen.width - (Screen.width / 3);
 
-   public Manager manager;
+    Vector3 convertedChoiceCoordinatesLeft;
+    Vector3 convertedChoiceCoordinatesRight;
+
+  
 
     bool isLeft;
-    bool IsLeft
+    protected bool IsLeft
     {
         get{ return isLeft; }
         set 
@@ -32,7 +35,7 @@ public class DraggableImage : MonoBehaviour
     }
 
     bool isRight;
-    bool IsRight
+    protected bool IsRight
     {
         get { return isRight; }
         set
@@ -50,6 +53,8 @@ public class DraggableImage : MonoBehaviour
         startingPosition = transform.position;
         image.sprite = sprite_Dropped;
 
+        convertedChoiceCoordinatesLeft = Camera.main.ScreenToWorldPoint(new Vector3(leftChoiceCoordinate, 0, 0));
+        convertedChoiceCoordinatesRight = Camera.main.ScreenToWorldPoint(new Vector3(rightChoiceCoordinate, 0, 0));
 
 
     }
@@ -63,15 +68,15 @@ public class DraggableImage : MonoBehaviour
     void OnMouseDrag()
     {
  
-        transform.position = Input.mousePosition;
-        if(transform.position.x <= leftChoiceCoordinate)
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + 2*Vector3.forward;
+        if(transform.position.x <= convertedChoiceCoordinatesLeft.x)
         {
             if(!IsLeft)
             IsLeft=true;
         }
         else IsLeft=false;
         
-        if (transform.position.x >= rightChoiceCoordinate)
+        if (transform.position.x >= convertedChoiceCoordinatesRight.x)
         {
             if(!IsRight)
             IsRight=true;
@@ -87,7 +92,7 @@ public class DraggableImage : MonoBehaviour
 
     
 
-    private void CheckAreaDropped()
+    protected virtual void CheckAreaDropped()
     {
         
         if (IsLeft)
@@ -104,9 +109,10 @@ public class DraggableImage : MonoBehaviour
         if (isLeft || isRight)
         {
 
-            transform.position = startingPosition;
+
             Destroy(this.gameObject);
         }
+        else transform.position = Vector3.zero;
 
     }
 

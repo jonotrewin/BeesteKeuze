@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bffb52e2236c3a9479e7e2636983c0ad, type: 3}
+  m_Name: TestMajorEvent
+  m_EditorClassIdentifier: 
+  character: {fileID: 4004843663434678587, guid: dddf40c32648f7e449f520b74e73e960, type: 3}
+  text: 'Prime-minister! You....you need to see this... '
+  choices:
+  - Text: Ohno
+    positiveStats: []
+    negativeStats: []
+    eventsToAdd: []
+  - Text: Let me see that!
+    positiveStats: []
+    negativeStats: []
+    eventsToAdd: []
+  newspaperImage: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  headline: Dingus Strikes Again
+  newspaperBody: Harooooo
+  newspaperChoices:
+  - choice:
+      Text: Suck a d***, dumbs***.
+      positiveStats: []
+      negativeStats: []
+      eventsToAdd: []
+    endingText: fartman
+  - choice:
+      Text: Reunite RFK with his brain worm.
+      positiveStats: []
+      negativeStats: []
+      eventsToAdd: []
+    endingText: Brain worm sex
+  - choice:
+      Text: Idk dude.
+      positiveStats: []
+      negativeStats: []
+      eventsToAdd: []
+    endingText: Fucked.

@@ -14,6 +14,8 @@ public class Manager : MonoBehaviour
 {
 
     public static Manager instance;
+    public DayManager dayManager;
+    public MajorEventManager majorManager;
 
     // Unity UI Pieces//
     [Header("Unity UI Pieces")]
@@ -26,7 +28,7 @@ public class Manager : MonoBehaviour
     [SerializeField] TextMeshProUGUI collabText;
     [SerializeField] TextMeshProUGUI fundsText;
 
-
+    GameObject currentCharacter;
 
     ///
 
@@ -102,6 +104,9 @@ public class Manager : MonoBehaviour
         happinessText.text = _happiness.ToString();
         collabText.text = _collaboration.ToString();
 
+        dayManager = GetComponent<DayManager>(); 
+        majorManager = GetComponent<MajorEventManager>();
+
         
 
     }
@@ -124,13 +129,14 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            DrawEvent();
+            StartCoroutine(DrawEvent());
         }
 
     }
 
-    public void DrawEvent()
+    public IEnumerator DrawEvent()
     {
+        Destroy(currentCharacter);
        
         ShowLeftText(false);
         ShowRightText(false);
@@ -142,16 +148,20 @@ public class Manager : MonoBehaviour
        
         minorEventDeck.RemoveAt(0);
         currentMinorEvent = minorEventDeck[0];
+        dayManager.DecreaseDays();
+        yield return new WaitForSeconds(2f);
         InitializeMinorEventUI(currentMinorEvent);
-        Instantiate(currentMinorEvent.character, new Vector2(Screen.width / 2, Screen.height / 2), Quaternion.identity, null);
-
+        currentCharacter = Instantiate(currentMinorEvent.character);
         
-  
+
+
+
+
 
     }
     
     
-    private void ExecuteChoice(Choice choice)
+    public void ExecuteChoice(Choice choice)
     {
         UpdateStats(choice.positiveStats, 1);
         UpdateStats(choice.negativeStats, -1);
@@ -161,7 +171,10 @@ public class Manager : MonoBehaviour
             minorEventDeck.Add(minorEvent);
         }
 
-        DrawEvent();
+       
+       
+      
+
 
         
     }
@@ -169,10 +182,13 @@ public class Manager : MonoBehaviour
     public void ExecuteLeftChoice()
     {
         ExecuteChoice(currentMinorEvent.choices[0]);
+        StartCoroutine(DrawEvent());
+        
     }
     public void ExecuteRightChoice()
     {
         ExecuteChoice(currentMinorEvent.choices[1]);
+        StartCoroutine(DrawEvent());
     }
 
     private void UpdateStats(Choice.statChange[] stats, int v)
