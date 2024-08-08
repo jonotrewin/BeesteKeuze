@@ -28,6 +28,11 @@ public class Choice
     [Tooltip("Choose which stats are decreased on choice, and by what degree")]
     public statChange[] negativeStats;
 
+    [Space(40)]
+    [Header("Tags")]
+    [Tooltip("Political tags on the decision")]
+    public Party.Tags[] tags;
+
 
     [Space(40)]
     [Header("Cards To Add")]

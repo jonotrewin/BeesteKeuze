@@ -18,30 +18,68 @@ MonoBehaviour:
   - Text: Ohno
     positiveStats: []
     negativeStats: []
+    tags: 
     eventsToAdd: []
   - Text: Let me see that!
     positiveStats: []
     negativeStats: []
+    tags: 
     eventsToAdd: []
-  newspaperImage: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  headline: Dingus Strikes Again
-  newspaperBody: Harooooo
+  newspaperImage: {fileID: 21300000, guid: 1142ea8b29ea7cf478342f65545236fa, type: 3}
+  headline: R.F.K. Jr. Says Doctors Found a Dead Worm in His Brain
+  newspaperBody: "In 2010, Robert F. Kennedy Jr. was experiencing memory loss and
+    mental fogginess so severe that a friend grew concerned he might have a brain
+    tumor. Mr. Kennedy said he consulted several of the country\u2019s top neurologists,
+    many of whom had either treated or spoken to his uncle, Senator Edward M. Kennedy,
+    before his death the previous year of brain cancer.\r\n\r\nSeveral doctors noticed
+    a dark spot on the younger Mr. Kennedy\u2019s brain scans and concluded that
+    he had a tumor, he said in a 2012 deposition reviewed by The New York Times.
+    Mr. Kennedy was immediately scheduled for a procedure at Duke University Medical
+    Center by the same surgeon who had operated on his uncle, he said.\r\n\r\nWhile
+    packing for the trip, he said, he received a call from a doctor at NewYork-Presbyterian
+    Hospital who had a different opinion: Mr. Kennedy, he believed, had a dead parasite
+    in his head.\r\n\r\n"
   newspaperChoices:
   - choice:
-      Text: Suck a d***, dumbs***.
+      Text: Start an anti-worm political movement!
       positiveStats: []
       negativeStats: []
+      tags: 
       eventsToAdd: []
-    endingText: fartman
+    endingText: "The doctor believed that the abnormality seen on his scans \u201Cwas
+      caused by a worm that got into my brain and ate a portion of it and then died,\u201D
+      Mr. Kennedy said in the deposition.  Now an independent presidential candidate,
+      the 70-year-old Mr. Kennedy has portrayed his athleticism and relative youth
+      as an advantage over the two oldest people to ever seek the White House: President
+      Biden, 81, and former President Donald J. Trump, 77. Mr. Kennedy has secured
+      a place on the ballots in Utah, Michigan, Hawaii and, his campaign says, California
+      and Delaware. His intensive efforts to gain access in more states could put
+      him in a position to tip the election."
   - choice:
       Text: Reunite RFK with his brain worm.
       positiveStats: []
       negativeStats: []
+      tags: 
       eventsToAdd: []
-    endingText: Brain worm sex
+    endingText: "He has gone to lengths to appear hale, skiing with a professional
+      snowboarder and with an Olympic gold medalist who called him a \u201Cripper\u201D
+      as they raced down the mountain. A camera crew was at his side while he lifted
+      weights, shirtless, at an outdoor gym in Venice Beach.  Image Robert F. Kennedy
+      Jr. on skis in the snow with Travis Rice, who is on a snowboard. Mr. Kennedy
+      hit the slopes in Jackson Hole, Wyo., this year with the professional snowboarder
+      Travis Rice. Credit...via Facebook Still, over the years, he has faced serious
+      health issues, some previously undisclosed, including the apparent parasite. 
+      For decades, Mr. Kennedy suffered from atrial fibrillation, a common heartbeat
+      abnormality that increases the risk of stroke or heart failure. He has been
+      hospitalized at least four times for episodes, although in an interview with
+      The Times this winter, he said he had not had an incident in more than a decade
+      and believed the condition had disappeared."
   - choice:
       Text: Idk dude.
       positiveStats: []
       negativeStats: []
+      tags: 
       eventsToAdd: []
-    endingText: Fucked.
+    endingText: "\u201CI have cognitive problems, clearly,\u201D he said in the 2012
+      deposition. \u201CI have short-term memory loss, and I have longer-term memory
+      loss that affects me.\u201D"

@@ -9,13 +9,13 @@ public class Scrollable : MonoBehaviour, IScrollHandler
 {
 
     public float scrollDelay = 3;
-    public float scrollSpeed;
+    public float scrollSpeed = 40;
 
     public float startingPosition;
     public float destinationPosition;
     public void OnScroll(PointerEventData eventData)
     {
-        destinationPosition += eventData.scrollDelta.y*scrollSpeed;
+        destinationPosition -= eventData.scrollDelta.y*scrollSpeed;
 
         
         

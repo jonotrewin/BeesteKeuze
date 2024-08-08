@@ -9,7 +9,7 @@ using System;
 
 public class EventCharacter : MonoBehaviour
 {
-    [SerializeField]Sprite sprite_Carried;
+    [SerializeField] Sprite sprite_Carried;
     [SerializeField] Sprite sprite_Dropped;
     SpriteRenderer image;
 
@@ -21,14 +21,16 @@ public class EventCharacter : MonoBehaviour
     Vector3 convertedChoiceCoordinatesLeft;
     Vector3 convertedChoiceCoordinatesRight;
 
-  
+    [SerializeField] int distanceFromCamera = 15;
+
+
 
     bool isLeft;
     protected bool IsLeft
     {
-        get{ return isLeft; }
-        set 
-        { 
+        get { return isLeft; }
+        set
+        {
             isLeft = value;
             Manager.instance.ShowLeftText(value);
         }
@@ -55,33 +57,39 @@ public class EventCharacter : MonoBehaviour
 
         convertedChoiceCoordinatesLeft = Camera.main.ScreenToWorldPoint(new Vector3(leftChoiceCoordinate, 0, 0));
         convertedChoiceCoordinatesRight = Camera.main.ScreenToWorldPoint(new Vector3(rightChoiceCoordinate, 0, 0));
-
+        gameObject.AddComponent<ScaleOnEnter>();
 
     }
-    
+
     void OnMouseDown()
     {
+        if (!Manager.instance.CanInteract) return;
         image.sprite = sprite_Carried;
-  
+
     }
 
     void OnMouseDrag()
     {
- 
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + 2*Vector3.forward;
-        if(transform.position.x <= convertedChoiceCoordinatesLeft.x)
+
+        if (!Manager.instance.CanInteract) return;
+
+        var mousePos = Input.mousePosition;
+        mousePos.z = distanceFromCamera;
+        transform.position = Camera.main.ScreenToWorldPoint(mousePos);
+
+        if (Camera.main.WorldToScreenPoint(transform.position).x <= leftChoiceCoordinate)
         {
-            if(!IsLeft)
-            IsLeft=true;
+            if (!IsLeft)
+                IsLeft = true;
         }
-        else IsLeft=false;
-        
-        if (transform.position.x >= convertedChoiceCoordinatesRight.x)
+        else IsLeft = false;
+
+        if (Camera.main.WorldToScreenPoint(transform.position).x >= rightChoiceCoordinate)
         {
-            if(!IsRight)
-            IsRight=true;
+            if (!IsRight)
+                IsRight = true;
         }
-        else IsRight=false;
+        else IsRight = false;
     }
 
     void OnMouseUp()
@@ -90,19 +98,19 @@ public class EventCharacter : MonoBehaviour
         CheckAreaDropped();
     }
 
-    
+
 
     protected virtual void CheckAreaDropped()
     {
-        
+
         if (IsLeft)
         {
 
             Manager.instance.ExecuteLeftChoice();
-            
+
         }
 
-        if(IsRight)
+        if (IsRight)
         {
             Manager.instance.ExecuteRightChoice();
         }
@@ -115,6 +123,5 @@ public class EventCharacter : MonoBehaviour
         else transform.position = Vector3.zero;
 
     }
-
 
 }

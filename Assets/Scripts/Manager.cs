@@ -16,6 +16,9 @@ public class Manager : MonoBehaviour
     public static Manager instance;
     public DayManager dayManager;
     public MajorEventManager majorManager;
+    public ElectionManager electionManager;
+
+    public bool CanInteract;
 
     // Unity UI Pieces//
     [Header("Unity UI Pieces")]
@@ -30,37 +33,54 @@ public class Manager : MonoBehaviour
 
     GameObject currentCharacter;
 
+    [SerializeField] UI_PartySymbol[] leftSymbols;
+    [SerializeField] UI_PartySymbol[] rightSymbols;
+
+
+    [SerializeField]
+    GameObject[] choiceUI;
+
     ///
 
     //List Of Current Stats///
 
     [Header("Statistics")]
-    [SerializeField]int _collaboration;
-    [SerializeField] int _happiness;
-    [SerializeField]int _funds;
-   int Collaboration
+    [SerializeField]int _collaboration = 50;
+    [SerializeField] int _happiness = 50;
+    [SerializeField]int _funds = 50;
+
+    [SerializeField] int collabReductionForCoalitionDisagreement = 10;
+
+
+   public int Collaboration
     {
         get { return _collaboration; }
-        set { 
+        set {
+            if (value <= 0) value = 0;
+            if (value >= 100) value = 100;
             _collaboration = value;
             collabText.text = _collaboration.ToString();
             }
     }
-     int Happiness
+     public int Happiness
     {
         get { return _happiness; }
         set
         {
+            if (value <= 0) value = 0;
+            if (value >= 100) value = 100;
             _happiness = value;
             happinessText.text = _happiness.ToString();
         }
     }
 
-    int Funds
+    public int Funds
     {
         get { return _funds; }
         set
         {
+            if (value <= 0) value = 0;
+            if (value >= 100) value = 100;
             _funds = value;
             fundsText.text = _funds.ToString();
         }
@@ -93,7 +113,7 @@ public class Manager : MonoBehaviour
 
 
 
-    private void Start()
+    private void Awake()
     {
         if(instance != null)
         { Destroy(instance); }
@@ -113,7 +133,9 @@ public class Manager : MonoBehaviour
 
     public void InitializeMinorEventUI(MinorEvent minorEvent)
     {
+        
         eventText.text = minorEvent.text;
+        eventText.transform.parent.gameObject.SetActive(false);
         
         choice1Text.text = minorEvent.choices[0].Text;
         choice2Text.text = minorEvent.choices[1].Text;
@@ -136,8 +158,10 @@ public class Manager : MonoBehaviour
 
     public IEnumerator DrawEvent()
     {
+
         Destroy(currentCharacter);
-       
+
+
         ShowLeftText(false);
         ShowRightText(false);
         if (minorEventDeck.Count <= 1)
@@ -145,24 +169,35 @@ public class Manager : MonoBehaviour
             minorEventDeck.Add(genericEvents[Random.Range(0, genericEvents.Count)]);
             minorEventDeck.Add(genericEvents[Random.Range(0, genericEvents.Count)]);
         }
-       
+
         minorEventDeck.RemoveAt(0);
         currentMinorEvent = minorEventDeck[0];
         dayManager.DecreaseDays();
         yield return new WaitForSeconds(2f);
-        InitializeMinorEventUI(currentMinorEvent);
-        currentCharacter = Instantiate(currentMinorEvent.character);
-        
-
-
-
-
+    
 
     }
-    
-    
+
+    public void GetNextCharacter()
+    {
+        InitializeMinorEventUI(currentMinorEvent);
+        currentCharacter = Instantiate(currentMinorEvent.character);
+    }
+
     public void ExecuteChoice(Choice choice)
     {
+        
+        foreach(Party.Tags tag in choice.tags)
+        {
+            foreach (Party party in Manager.instance.electionManager.selectedParties)
+            {
+                if (party.partyDislikes.Contains(tag))
+                {
+                    Collaboration -= collabReductionForCoalitionDisagreement;
+                }
+               
+            }
+        }
         UpdateStats(choice.positiveStats, 1);
         UpdateStats(choice.negativeStats, -1);
         foreach(MinorEvent minorEvent in choice.eventsToAdd)
@@ -170,6 +205,8 @@ public class Manager : MonoBehaviour
             if(minorEvent != null)
             minorEventDeck.Add(minorEvent);
         }
+
+        ActivateText(false);
 
        
        
@@ -215,13 +252,67 @@ public class Manager : MonoBehaviour
     }
 
 
+    
+
+    private void CheckPartyAgreement(Choice choice, UI_PartySymbol[] symbols)
+    {
+        foreach(UI_PartySymbol sym in symbols)
+        {
+            sym.gameObject.SetActive(false);
+        }
+        
+
+        foreach (Party.Tags tag in choice.tags)
+        {
+            Debug.Log(tag);
+            foreach(Party party in Manager.instance.electionManager.selectedParties)
+            {
+                if(party.partyLikes.Contains(tag))
+                {
+                    
+                    foreach(UI_PartySymbol symbol in symbols)
+                    {
+                       
+                        if (symbol.party == party && symbol.positive) symbol.gameObject.SetActive(true);
+                       
+                    }
+                }
+
+                if (party.partyDislikes.Contains(tag))
+                {
+                    foreach (UI_PartySymbol symbol in symbols)
+                    {
+                        Debug.Log("Hit Neg!");
+                        if (symbol.party == party && !symbol.positive) symbol.gameObject.SetActive(true);
+                  
+                    }
+                }
+            }
+        }
+    }
+
     public void ShowLeftText(bool value)
     {
+        //activates parent with vertical spacing group, instead of just the text - so the coalition (dis-)agreement appears
 
-        choice1Text.gameObject.SetActive(value);
+        if (!choiceUI[0].activeSelf) CheckPartyAgreement(currentMinorEvent.choices[0], leftSymbols);
+        choiceUI[0].SetActive(value);
+
     }
+
     public void ShowRightText(bool value)
     {
-        choice2Text.gameObject.SetActive(value);
+        if (!choiceUI[1].activeSelf) CheckPartyAgreement(currentMinorEvent.choices[1], rightSymbols);
+        choiceUI[1].SetActive(value);
+    }
+
+    public void SetInteraction(bool value)
+    {
+        CanInteract = value;
+    }
+
+    public void ActivateText(bool value)
+    {
+        eventText.transform.parent.gameObject.SetActive(value);
     }
 }

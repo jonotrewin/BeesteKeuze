@@ -22,6 +22,7 @@ public class DayManager : MonoBehaviour
     public void DecreaseDays()
     {
         daysUntilNextElection -= Random.Range(minimumDaysBetweenEvents,maximumDaysBetweenEvents);
+        if (daysUntilNextElection <= 0) daysUntilNextElection = 0;
         if (int.Parse(uiDaysTillNext.text) != daysUntilNextElection)
         {
             StartCoroutine(UpdateUI());
@@ -44,6 +45,16 @@ public class DayManager : MonoBehaviour
         if(daysTillNext != daysUntilNextElection)
         {
             StartCoroutine(UpdateUI());
+        }
+        else {
+            yield return new WaitForSeconds(2f);
+            Manager.instance.GetNextCharacter(); 
+        }
+
+        if (daysUntilNextElection <= 0)
+        {
+            yield return new WaitForSeconds(5f);
+            Manager.instance.electionManager.RunElection();
         }
      
        
