@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -43,6 +44,7 @@ public class Manager : MonoBehaviour
     GameObject[] choiceUI;
 
     [SerializeField]PulsingStat[] statsInUI;
+    [SerializeField] GameObject endGameCanvas;
     
 
     ///
@@ -56,8 +58,12 @@ public class Manager : MonoBehaviour
 
     [SerializeField] int collabReductionForCoalitionDisagreement = 10;
 
+    [Header("End Game Events")]
+    [SerializeField]MinorEvent happinessEnding;
+    [SerializeField]MinorEvent collaborationEnding;
+    [SerializeField]MinorEvent fundEnding;
 
-   public int Collaboration
+    public int Collaboration
     {
         get { return _collaboration; }
         set {
@@ -164,6 +170,7 @@ public class Manager : MonoBehaviour
 
     public IEnumerator DrawEvent()
     {
+        
         CanInteract = false; //is reactivated by UnityEvent attached to character text bubble in scene.
         Destroy(currentCharacter);
 
@@ -177,11 +184,28 @@ public class Manager : MonoBehaviour
         }
 
         minorEventDeck.RemoveAt(0);
+        CheckIfStatsZero();
         currentMinorEvent = minorEventDeck[0];
         dayManager.DecreaseDays();
         yield return new WaitForSeconds(2f);
     
 
+    }
+
+    private void CheckIfStatsZero()
+    {
+        if(_collaboration <= 0)
+        {
+            EndGameEvent(collaborationEnding);
+        }
+        if (_happiness <= 0)
+        {
+            EndGameEvent(happinessEnding);
+        }
+        if (_funds <= 0)
+        {
+            EndGameEvent(fundEnding);
+        }
     }
 
     public void GetNextCharacter()
@@ -364,5 +388,32 @@ public class Manager : MonoBehaviour
     public void ActivateText(bool value)
     {
         eventText.transform.parent.gameObject.SetActive(value);
+    }
+
+    public void EndGameEvent(MinorEvent ev)
+    {
+        minorEventDeck.Clear();
+        minorEventDeck.Add(ev);
+
+    }
+
+    public IEnumerator EndGame()
+    {
+        EndGameCharacter egc = (EndGameCharacter)currentMinorEvent.character.GetComponent<EventCharacter>();
+        eventText.text = egc.endText;
+        TypewriterByCharacter t = eventText.GetComponent<TypewriterByCharacter>();
+        t.onTextShowed.RemoveAllListeners();
+        t.onTextShowed.AddListener(() =>
+        {
+           
+            endGameCanvas.SetActive(true);
+        });
+        yield return null;
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadSceneAsync(0);
+
     }
 }

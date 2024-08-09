@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f3c363875caf04d84cae1601c039de, type: 3}
+  m_Name: CoalitionEnding
+  m_EditorClassIdentifier: 
+  character: {fileID: 7379550787497444543, guid: 86ff51b0b76dd784893fe7a5b2c8f5e1, type: 3}
+  text: 'CoalitionEnding
+
+'
+  choices:
+  - Text: Damn
+    positiveStats: []
+    negativeStats: []
+    tags: 
+    eventsToAdd: []
+  - Text: So be it!
+    positiveStats: []
+    negativeStats: []
+    tags: 
+    eventsToAdd: []

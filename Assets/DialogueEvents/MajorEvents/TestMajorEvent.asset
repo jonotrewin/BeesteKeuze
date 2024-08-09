@@ -43,7 +43,9 @@ MonoBehaviour:
   - choice:
       Text: Start an anti-worm political movement!
       positiveStats: []
-      negativeStats: []
+      negativeStats:
+      - stat: 1
+        impact: 0
       tags: 
       eventsToAdd: []
     endingText: "The doctor believed that the abnormality seen on his scans \u201Cwas
