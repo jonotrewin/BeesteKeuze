@@ -1,3 +1,5 @@
+using DG.Tweening;
+using Febucci.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,9 +29,9 @@ public class Manager : MonoBehaviour
     [SerializeField] TextMeshProUGUI choice1Text;
     [SerializeField] TextMeshProUGUI choice2Text;
 
-    [SerializeField] TextMeshProUGUI happinessText;
-    [SerializeField] TextMeshProUGUI collabText;
-    [SerializeField] TextMeshProUGUI fundsText;
+    [SerializeField] Slider happinessText;
+    [SerializeField] Slider collabText;
+    [SerializeField] Slider fundsText;
 
     GameObject currentCharacter;
 
@@ -39,6 +41,9 @@ public class Manager : MonoBehaviour
 
     [SerializeField]
     GameObject[] choiceUI;
+
+    [SerializeField]PulsingStat[] statsInUI;
+    
 
     ///
 
@@ -59,8 +64,8 @@ public class Manager : MonoBehaviour
             if (value <= 0) value = 0;
             if (value >= 100) value = 100;
             _collaboration = value;
-            collabText.text = _collaboration.ToString();
-            }
+            DOTween.To(() => collabText.value, x => collabText.value = x, _collaboration, 0.2f);
+        }
     }
      public int Happiness
     {
@@ -70,7 +75,7 @@ public class Manager : MonoBehaviour
             if (value <= 0) value = 0;
             if (value >= 100) value = 100;
             _happiness = value;
-            happinessText.text = _happiness.ToString();
+            DOTween.To(()=> happinessText.value, x=>happinessText.value = x, _happiness,0.2f);
         }
     }
 
@@ -82,7 +87,7 @@ public class Manager : MonoBehaviour
             if (value <= 0) value = 0;
             if (value >= 100) value = 100;
             _funds = value;
-            fundsText.text = _funds.ToString();
+            DOTween.To(() => fundsText.value, x => fundsText.value = x, _funds, 0.2f);
         }
     }
 
@@ -119,11 +124,10 @@ public class Manager : MonoBehaviour
         { Destroy(instance); }
         instance = this;
 
-        DontDestroyOnLoad(this);
-        fundsText.text = _funds.ToString();
-        happinessText.text = _happiness.ToString();
-        collabText.text = _collaboration.ToString();
-
+        fundsText.value = _funds;
+        happinessText.value = _happiness;
+        collabText.value = _collaboration; 
+        
         dayManager = GetComponent<DayManager>(); 
         majorManager = GetComponent<MajorEventManager>();
 
@@ -135,6 +139,8 @@ public class Manager : MonoBehaviour
     {
         
         eventText.text = minorEvent.text;
+        eventText.GetComponent<TypewriterByCharacter>().onCharacterVisible.RemoveAllListeners();
+        eventText.GetComponent<TypewriterByCharacter>().onCharacterVisible.AddListener((call) => { AudioManager.Instance.Play(currentCharacter.GetComponent<EventCharacter>().animalSound); });
         eventText.transform.parent.gameObject.SetActive(false);
         
         choice1Text.text = minorEvent.choices[0].Text;
@@ -158,7 +164,7 @@ public class Manager : MonoBehaviour
 
     public IEnumerator DrawEvent()
     {
-
+        CanInteract = false; //is reactivated by UnityEvent attached to character text bubble in scene.
         Destroy(currentCharacter);
 
 
@@ -182,6 +188,7 @@ public class Manager : MonoBehaviour
     {
         InitializeMinorEventUI(currentMinorEvent);
         currentCharacter = Instantiate(currentMinorEvent.character);
+        currentCharacter.GetComponent<ScaleOnEnter>().OnScaleComplete.AddListener(() => { ActivateText(true); });
     }
 
     public void ExecuteChoice(Choice choice)
@@ -207,7 +214,7 @@ public class Manager : MonoBehaviour
         }
 
         ActivateText(false);
-
+        StopPulsing();
        
        
       
@@ -222,6 +229,36 @@ public class Manager : MonoBehaviour
         StartCoroutine(DrawEvent());
         
     }
+
+    private void Pulse(Choice choice)
+    {
+        foreach(Choice.statChange statChange in choice.positiveStats)
+        { 
+            foreach(PulsingStat uiStat in statsInUI)
+            {
+                if(uiStat.stat == statChange.stat)
+                {
+                    uiStat.GetComponent<Slider>().fillRect.GetComponent<Image>().color = Color.green;
+                    uiStat.Pulse(statChange.impact);
+                }
+            }
+        }
+
+        foreach (Choice.statChange statChange in choice.negativeStats)
+        {
+            foreach (PulsingStat uiStat in statsInUI)
+            {
+                if (uiStat.stat == statChange.stat)
+                {
+                    uiStat.GetComponent<Slider>().fillRect.GetComponent<Image>().color = Color.red;
+                    uiStat.Pulse(statChange.impact);
+                }
+            }
+        }
+
+
+    }
+
     public void ExecuteRightChoice()
     {
         ExecuteChoice(currentMinorEvent.choices[1]);
@@ -296,6 +333,8 @@ public class Manager : MonoBehaviour
         //activates parent with vertical spacing group, instead of just the text - so the coalition (dis-)agreement appears
 
         if (!choiceUI[0].activeSelf) CheckPartyAgreement(currentMinorEvent.choices[0], leftSymbols);
+        if (value) Pulse(currentMinorEvent.choices[0]);
+     
         choiceUI[0].SetActive(value);
 
     }
@@ -303,7 +342,18 @@ public class Manager : MonoBehaviour
     public void ShowRightText(bool value)
     {
         if (!choiceUI[1].activeSelf) CheckPartyAgreement(currentMinorEvent.choices[1], rightSymbols);
+        if(value)Pulse(currentMinorEvent.choices[1]);
+   
         choiceUI[1].SetActive(value);
+    }
+
+    public void StopPulsing()
+    {
+        foreach(PulsingStat uiStat in statsInUI)
+        {
+            uiStat.GetComponent<Slider>().fillRect.GetComponent<Image>().color = Color.blue;
+            uiStat.StopPulse();
+        }
     }
 
     public void SetInteraction(bool value)

@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3041204125353122088, guid: cee713c7935b0714fb470978d3ee0ab1, type: 3}
+      propertyPath: animalSound
+      value: Voice_Cow
+      objectReference: {fileID: 0}
+    - target: {fileID: 3041204125353122088, guid: cee713c7935b0714fb470978d3ee0ab1, type: 3}
       propertyPath: sprite_Carried
       value: 
       objectReference: {fileID: 2747690628134850419, guid: b670ab75dde984907b8570040daa08c5, type: 3}

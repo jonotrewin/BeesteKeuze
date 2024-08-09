@@ -24,7 +24,7 @@ MonoBehaviour:
     negativeStats:
     - stat: 1
       impact: 2
-    tags: 000000000300000002000000
+    tags: 0300000002000000
     eventsToAdd:
     - {fileID: 11400000, guid: 895f3b3f30f004b4c9be14c6e653a2bc, type: 2}
   - Text: We stoppen met het snelweg. Het blijft een belangrijk project, maar ik

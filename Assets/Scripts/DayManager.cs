@@ -10,10 +10,12 @@ public class DayManager : MonoBehaviour
     [SerializeField]int maximumDaysBetweenEvents = 10;
 
     int eventsPassedThisPeriod = 0;
+    int dayPassedInGovernemnt = 0;
 
     [SerializeField]TextMeshProUGUI uiDaysTillNext;
 
-
+    [SerializeField] int daysInATerm = 600;
+    
     [SerializeField]float uiTickdownTime = 0.3f;
     private void Start()
     {
@@ -21,7 +23,9 @@ public class DayManager : MonoBehaviour
     }
     public void DecreaseDays()
     {
-        daysUntilNextElection -= Random.Range(minimumDaysBetweenEvents,maximumDaysBetweenEvents);
+        int daysToReduce = Random.Range(minimumDaysBetweenEvents, maximumDaysBetweenEvents);
+        daysUntilNextElection -= daysToReduce;
+        dayPassedInGovernemnt += daysToReduce;
         if (daysUntilNextElection <= 0) daysUntilNextElection = 0;
         if (int.Parse(uiDaysTillNext.text) != daysUntilNextElection)
         {
@@ -31,7 +35,7 @@ public class DayManager : MonoBehaviour
 
     public void ResetDays()
     {
-        daysUntilNextElection = 365 * 5;
+        daysUntilNextElection =  daysInATerm;
         eventsPassedThisPeriod = 0;
         uiDaysTillNext.text = daysUntilNextElection.ToString();
     }

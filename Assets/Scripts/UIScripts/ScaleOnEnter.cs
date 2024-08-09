@@ -19,7 +19,8 @@ public class ScaleOnEnter : MonoBehaviour
     {
         transform.localScale = Vector3.zero;
         transform.DOScale(startingScale, slowdown).OnComplete(() =>{
-            Manager.instance.ActivateText(true);
+            OnScaleComplete?.Invoke();
+            //add activate text from manager.instance in the character prefab
         });
     }
 }

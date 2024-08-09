@@ -23,6 +23,8 @@ public class EventCharacter : MonoBehaviour
 
     [SerializeField] int distanceFromCamera = 15;
 
+    [SerializeField] public string animalSound;
+
 
 
     bool isLeft;
@@ -57,7 +59,7 @@ public class EventCharacter : MonoBehaviour
 
         convertedChoiceCoordinatesLeft = Camera.main.ScreenToWorldPoint(new Vector3(leftChoiceCoordinate, 0, 0));
         convertedChoiceCoordinatesRight = Camera.main.ScreenToWorldPoint(new Vector3(rightChoiceCoordinate, 0, 0));
-        gameObject.AddComponent<ScaleOnEnter>();
+      
 
     }
 
@@ -90,6 +92,11 @@ public class EventCharacter : MonoBehaviour
                 IsRight = true;
         }
         else IsRight = false;
+
+        if(!isLeft&&!isRight)
+        {
+            Manager.instance.StopPulsing();
+        }
     }
 
     void OnMouseUp()

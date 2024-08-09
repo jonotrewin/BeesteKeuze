@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6143196693722079506}
   - component: {fileID: 3041204125353122088}
   - component: {fileID: 2313343399449927856}
+  - component: {fileID: -7782960631302593009}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -100,7 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite_Carried: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   sprite_Dropped: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
-  manager: {fileID: 0}
+  distanceFromCamera: 15
+  animalSound: Voice_Mouse
 --- !u!61 &2313343399449927856
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -146,3 +148,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-7782960631302593009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4004843663434678587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473bdf2d101ed4141934a3926c3e2f2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowdown: 4
+  OnScaleComplete:
+    m_PersistentCalls:
+      m_Calls: []
